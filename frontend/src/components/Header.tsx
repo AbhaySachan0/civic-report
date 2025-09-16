@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Flag, Sun, Moon } from 'lucide-react';
+import { Link } from 'react-router-dom';   // ✅ Import Link
 
 export function DarkModeToggle() {
   const [darkMode, setDarkMode] = useState(false);
@@ -55,9 +56,14 @@ export default function Header({ language, setLanguage }: { language: 'hi' | 'en
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-orange-500">
+            {/* ✅ Home goes to "/" */}
+            <Link
+              to="/"
+              className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-orange-500"
+            >
               {language === 'hi' ? 'होम' : 'Home'}
-            </a>
+            </Link>
+
             <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-orange-500">
               {language === 'hi' ? 'शिकायत दर्ज करें' : 'File Complaint'}
             </a>
@@ -70,9 +76,12 @@ export default function Header({ language, setLanguage }: { language: 'hi' | 'en
 
             {/* Action Buttons */}
             <div className="flex items-center gap-3">
-              <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-2 rounded-md hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-medium shadow-md">
-                {language === 'hi' ? 'लॉगिन' : 'Login'}
-              </button>
+              {/* ✅ Login button works */}
+              <Link to="/login">
+                <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-2 rounded-md hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-medium shadow-md">
+                  {language === 'hi' ? 'लॉगिन' : 'Login'}
+                </button>
+              </Link>
               <DarkModeToggle />
               <button
                 onClick={toggleLanguage}
@@ -96,9 +105,14 @@ export default function Header({ language, setLanguage }: { language: 'hi' | 'en
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700">
             <nav className="flex flex-col space-y-3">
-              <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium py-2 transition-colors duration-200">
+              {/* ✅ Mobile Home link */}
+              <Link
+                to="/"
+                className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium py-2 transition-colors duration-200"
+              >
                 {language === 'hi' ? 'होम' : 'Home'}
-              </a>
+              </Link>
+
               <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium py-2 transition-colors duration-200">
                 {language === 'hi' ? 'शिकायत दर्ज करें' : 'File Complaint'}
               </a>
@@ -110,9 +124,12 @@ export default function Header({ language, setLanguage }: { language: 'hi' | 'en
               </a>
 
               <div className="flex items-center gap-2 mt-3">
-                <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-md hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-medium w-full">
-                  {language === 'hi' ? 'लॉगिन' : 'Login'}
-                </button>
+                {/* ✅ Mobile Login link */}
+                <Link to="/login" className="w-full">
+                  <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-md hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-medium w-full">
+                    {language === 'hi' ? 'लॉगिन' : 'Login'}
+                  </button>
+                </Link>
                 <DarkModeToggle />
                 <button
                   onClick={toggleLanguage}
