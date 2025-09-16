@@ -6,6 +6,7 @@ import StatsSection from './components/StatsSection';
 import FeaturesSection from './components/FeaturesSection';
 import Footer from './components/Footer';
 import Login from './pages/login';
+import Signup from './pages/signup'; // ✅ Import Signup page
 
 function App() {
   const [language, setLanguage] = useState<'hi' | 'en'>('hi');
@@ -29,7 +30,11 @@ function App() {
         />
         <Route
           path="/login"
-          element={<Login language={language} />} // ✅ FIXED
+          element={<Login language={language} />}
+        />
+        <Route
+          path="/signup" // ✅ Add route for signup
+          element={<Signup language={language} />}
         />
       </Routes>
 

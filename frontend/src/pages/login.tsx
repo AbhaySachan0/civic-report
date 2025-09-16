@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import { Eye, EyeOff, User, Lock } from "lucide-react";
+import { Link } from "react-router-dom"; // ✅ Import Link for navigation
 
 function Login({ language }: { language: "hi" | "en" }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -125,12 +126,12 @@ function Login({ language }: { language: "hi" | "en" }) {
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-600 dark:text-gray-400">
             {language === "hi" ? "क्या आपका खाता नहीं है?" : "Don't have an account?"}{" "}
-            <a
-              href="#"
+            <Link
+              to="/signup" // ✅ Navigate to Signup page
               className="text-orange-600 hover:text-orange-700 font-medium"
             >
               {language === "hi" ? "यहां रजिस्टर करें" : "Register here"}
-            </a>
+            </Link>
           </p>
         </div>
       </div>
@@ -138,4 +139,4 @@ function Login({ language }: { language: "hi" | "en" }) {
   );
 }
 
-export default Login
+export default Login;
