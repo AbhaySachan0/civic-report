@@ -7,6 +7,7 @@ import {
   Lock,
   UserPlus,
 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom"; // ✅ import
 
 function SignupPage({ language }: { language: "hi" | "en" }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +20,8 @@ function SignupPage({ language }: { language: "hi" | "en" }) {
     agreeToTerms: false,
   });
 
+  const navigate = useNavigate(); // ✅ hook for navigation
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -29,12 +32,17 @@ function SignupPage({ language }: { language: "hi" | "en" }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     console.log("Registration data:", formData);
+
     alert(
       language === "hi"
         ? "रजिस्ट्रेशन सबमिट किया गया!"
         : "Registration submitted!"
     );
+
+    // ✅ After successful signup, redirect to login page
+    navigate("/login");
   };
 
   return (
@@ -246,14 +254,14 @@ function SignupPage({ language }: { language: "hi" | "en" }) {
           <div className="text-center">
             <p className="text-gray-600 dark:text-gray-400">
               {language === "hi" ? "पहले से खाता है?" : "Already have an account?"}{" "}
-              <a
-                href="#"
+              <Link
+                to="/login" // ✅ navigate back to login
                 className="text-orange-500 hover:text-orange-600 font-medium"
               >
                 {language === "hi"
                   ? "यहां साइन इन करें"
                   : "Sign in here"}
-              </a>
+              </Link>
             </p>
           </div>
         </form>
