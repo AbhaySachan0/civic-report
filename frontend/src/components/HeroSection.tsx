@@ -1,5 +1,6 @@
-import React from 'react';
+// import React from 'react';
 import { Camera, Eye, ArrowRight, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom'; // ✅ for navigation
 
 export default function HeroSection({ language }: { language: 'hi' | 'en' }) {
   return (
@@ -49,11 +50,14 @@ export default function HeroSection({ language }: { language: 'hi' | 'en' }) {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button className="group bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center">
-                <Camera className="w-5 h-5 mr-2" />
-                {language === 'hi' ? 'शिकायत दर्ज करें' : 'File Complaint'}
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-              </button>
+              {/* ✅ File Complaint navigates to /file-complaint */}
+              <Link to="/file-complaint">
+                <button className="group bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center">
+                  <Camera className="w-5 h-5 mr-2" />
+                  {language === 'hi' ? 'शिकायत दर्ज करें' : 'File Complaint'}
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+                </button>
+              </Link>
               
               <button className="group bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-8 py-4 rounded-lg font-semibold text-lg border-2 border-blue-200 dark:border-gray-700 hover:border-blue-800 dark:hover:border-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center">
                 <Eye className="w-5 h-5 mr-2" />

@@ -1,17 +1,47 @@
 import { useState, FormEvent } from "react";
 import { Eye, EyeOff, User, Lock } from "lucide-react";
-import { Link } from "react-router-dom"; // ✅ Import Link for navigation
+import { Link, useNavigate } from "react-router-dom";
 
-function Login({ language }: { language: "hi" | "en" }) {
+interface LoginProps {
+  language: "hi" | "en";
+  setIsAuth: (value: boolean) => void; // ✅ Added prop to update auth state
+}
+
+function Login({ language, setIsAuth }: LoginProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password, rememberMe });
-    alert(language === "hi" ? "लॉगिन सबमिट किया गया!" : "Login submitted!");
+
+    const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
+
+    const user = storedUsers.find(
+      (u: any) => u.email === email && u.password === password
+    );
+
+    if (user) {
+      alert(language === "hi" ? "सफलतापूर्वक लॉगिन हुआ!" : "Login successful!");
+
+      // ✅ Save login state
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      localStorage.setItem("isAuthenticated", "true");
+
+      // ✅ Update App auth state
+      setIsAuth(true);
+
+      navigate("/");
+    } else {
+      alert(
+        language === "hi"
+          ? "गलत ईमेल या पासवर्ड!"
+          : "Invalid email or password!"
+      );
+    }
   };
 
   return (
@@ -127,7 +157,7 @@ function Login({ language }: { language: "hi" | "en" }) {
           <p className="text-sm text-gray-600 dark:text-gray-400">
             {language === "hi" ? "क्या आपका खाता नहीं है?" : "Don't have an account?"}{" "}
             <Link
-              to="/signup" // ✅ Navigate to Signup page
+              to="/signup"
               className="text-orange-600 hover:text-orange-700 font-medium"
             >
               {language === "hi" ? "यहां रजिस्टर करें" : "Register here"}

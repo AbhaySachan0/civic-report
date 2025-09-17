@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import {
-  User,
-  Eye,
-  EyeOff,
-  Mail,
-  Lock,
-  UserPlus,
-} from "lucide-react";
-import { Link, useNavigate } from "react-router-dom"; // ✅ import
+import { User, Eye, EyeOff, Mail, Lock, UserPlus } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
-function SignupPage({ language }: { language: "hi" | "en" }) {
+interface SignupPageProps {
+  language: "hi" | "en";
+  setIsAuth: (value: boolean) => void; // ✅ Added prop
+}
+
+function SignupPage({ language, setIsAuth }: SignupPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,8 +17,9 @@ function SignupPage({ language }: { language: "hi" | "en" }) {
     confirmPassword: "",
     agreeToTerms: false,
   });
+  const [error, setError] = useState("");
 
-  const navigate = useNavigate(); // ✅ hook for navigation
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -33,30 +32,56 @@ function SignupPage({ language }: { language: "hi" | "en" }) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("Registration data:", formData);
+    if (formData.password !== formData.confirmPassword) {
+      setError(
+        language === "hi"
+          ? "पासवर्ड मेल नहीं खा रहा है"
+          : "Passwords do not match"
+      );
+      return;
+    }
 
-    alert(
-      language === "hi"
-        ? "रजिस्ट्रेशन सबमिट किया गया!"
-        : "Registration submitted!"
-    );
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
 
-    // ✅ After successful signup, redirect to login page
-    navigate("/login");
+    const userExists = users.find((u: any) => u.email === formData.email);
+    if (userExists) {
+      setError(
+        language === "hi"
+          ? "यह ईमेल पहले से पंजीकृत है। कृपया लॉगिन करें।"
+          : "This email is already registered. Please login."
+      );
+      return;
+    }
+
+    const newUser = {
+      fullName: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+    };
+    const updatedUsers = [...users, newUser];
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+    // ✅ Save login state after signup
+    localStorage.setItem("loggedInUser", JSON.stringify(newUser));
+    localStorage.setItem("isAuthenticated", "true");
+    setIsAuth(true); // ✅ Update App auth state
+
+    setError("");
+    navigate("/"); // ✅ Redirect to main page
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-50 dark:bg-gray-900 transition-colors duration-300">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors duration-300">
-        {/* Avatar Icon */}
+        {/* Avatar */}
         <div className="flex justify-center mb-6">
           <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
             <UserPlus className="h-8 w-8 text-blue-600 dark:text-blue-300" />
           </div>
         </div>
 
-        {/* Title and Subtitle */}
-        <div className="text-center mb-8">
+        {/* Title */}
+        <div className="text-center mb-6">
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
             {language === "hi" ? "खाता बनाएं" : "Create Account"}
           </h2>
@@ -67,7 +92,12 @@ function SignupPage({ language }: { language: "hi" | "en" }) {
           </p>
         </div>
 
-        {/* Registration Form */}
+        {/* Error */}
+        {error && (
+          <p className="text-red-500 text-center mb-4 font-medium">{error}</p>
+        )}
+
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Full Name */}
           <div>
@@ -253,14 +283,14 @@ function SignupPage({ language }: { language: "hi" | "en" }) {
           {/* Sign In */}
           <div className="text-center">
             <p className="text-gray-600 dark:text-gray-400">
-              {language === "hi" ? "पहले से खाता है?" : "Already have an account?"}{" "}
+              {language === "hi"
+                ? "पहले से खाता है?"
+                : "Already have an account?"}{" "}
               <Link
-                to="/login" // ✅ navigate back to login
+                to="/login"
                 className="text-orange-500 hover:text-orange-600 font-medium"
               >
-                {language === "hi"
-                  ? "यहां साइन इन करें"
-                  : "Sign in here"}
+                {language === "hi" ? "यहां साइन इन करें" : "Sign in here"}
               </Link>
             </p>
           </div>

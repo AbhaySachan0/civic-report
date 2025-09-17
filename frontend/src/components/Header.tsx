@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X, Flag, Sun, Moon } from 'lucide-react';
-import { Link } from 'react-router-dom';   // ✅ Import Link
+import { Link, useNavigate } from 'react-router-dom';
 
 export function DarkModeToggle() {
   const [darkMode, setDarkMode] = useState(false);
@@ -23,20 +23,47 @@ export function DarkModeToggle() {
   );
 }
 
-export default function Header({ language, setLanguage }: { language: 'hi' | 'en', setLanguage: (lang: 'hi' | 'en') => void }) {
+export default function Header({
+  language,
+  setLanguage,
+  isAuth,
+  setIsAuth,
+}: {
+  language: 'hi' | 'en';
+  setLanguage: (lang: 'hi' | 'en') => void;
+  isAuth: boolean;
+  setIsAuth: (value: boolean) => void;
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleLanguage = () => setLanguage(language === 'hi' ? 'en' : 'hi');
 
-  const toggleLanguage = () => {
-    setLanguage(language === 'hi' ? 'en' : 'hi');
+  useEffect(() => {
+    const authStatus = localStorage.getItem('isAuthenticated') === 'true';
+    setIsAuth(authStatus);
+  }, [setIsAuth]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('loggedInUser');
+    setIsAuth(false);
+    navigate('/');
+  };
+
+  const handleFileComplaintClick = () => {
+    if (isAuth) {
+      navigate('/file-complaint');
+    } else {
+      navigate('/login');
+    }
   };
 
   return (
     <header className="bg-white dark:bg-gray-900 shadow-md border-b-4 border-orange-500 sticky top-0 z-50 transition-colors duration-300">
-      {/* Government Header Bar */}
       <div className="bg-gradient-to-r from-orange-500 via-white to-green-600 h-1"></div>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -56,32 +83,54 @@ export default function Header({ language, setLanguage }: { language: 'hi' | 'en
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            {/* ✅ Home goes to "/" */}
             <Link
               to="/"
               className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-orange-500"
             >
               {language === 'hi' ? 'होम' : 'Home'}
             </Link>
-
-            <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-orange-500">
+            <button
+              onClick={handleFileComplaintClick}
+              className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-orange-500"
+            >
               {language === 'hi' ? 'शिकायत दर्ज करें' : 'File Complaint'}
-            </a>
-            <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-orange-500">
+            </button>
+            <a
+              href="#"
+              className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-orange-500"
+            >
               {language === 'hi' ? 'समुदाय' : 'Community'}
             </a>
-            <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-orange-500">
+            <a
+              href="#"
+              className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-orange-500"
+            >
               {language === 'hi' ? 'मेरी शिकायतें' : 'My Complaints'}
             </a>
 
             {/* Action Buttons */}
             <div className="flex items-center gap-3">
-              {/* ✅ Login button works */}
-              <Link to="/login">
-                <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-2 rounded-md hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-medium shadow-md">
-                  {language === 'hi' ? 'लॉगिन' : 'Login'}
-                </button>
-              </Link>
+              {isAuth ? (
+                <>
+                  <Link to="/profile">
+                    <button className="bg-blue-500 text-white px-5 py-2 rounded-md hover:bg-blue-600 transition">
+                      {language === 'hi' ? 'प्रोफ़ाइल' : 'Profile'}
+                    </button>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-500 text-white px-5 py-2 rounded-md hover:bg-red-600 transition"
+                  >
+                    {language === 'hi' ? 'लॉग आउट' : 'Logout'}
+                  </button>
+                </>
+              ) : (
+                <Link to="/login">
+                  <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-2 rounded-md hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-medium shadow-md">
+                    {language === 'hi' ? 'लॉगिन' : 'Login'}
+                  </button>
+                </Link>
+              )}
               <DarkModeToggle />
               <button
                 onClick={toggleLanguage}
@@ -105,31 +154,53 @@ export default function Header({ language, setLanguage }: { language: 'hi' | 'en
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700">
             <nav className="flex flex-col space-y-3">
-              {/* ✅ Mobile Home link */}
               <Link
                 to="/"
                 className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium py-2 transition-colors duration-200"
               >
                 {language === 'hi' ? 'होम' : 'Home'}
               </Link>
-
-              <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium py-2 transition-colors duration-200">
+              <button
+                onClick={handleFileComplaintClick}
+                className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium py-2 transition-colors duration-200 text-left"
+              >
                 {language === 'hi' ? 'शिकायत दर्ज करें' : 'File Complaint'}
-              </a>
-              <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium py-2 transition-colors duration-200">
+              </button>
+              <a
+                href="#"
+                className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium py-2 transition-colors duration-200"
+              >
                 {language === 'hi' ? 'समुदाय' : 'Community'}
               </a>
-              <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium py-2 transition-colors duration-200">
+              <a
+                href="#"
+                className="text-gray-700 dark:text-gray-200 hover:text-blue-800 font-medium py-2 transition-colors duration-200"
+              >
                 {language === 'hi' ? 'मेरी शिकायतें' : 'My Complaints'}
               </a>
 
               <div className="flex items-center gap-2 mt-3">
-                {/* ✅ Mobile Login link */}
-                <Link to="/login" className="w-full">
-                  <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-md hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-medium w-full">
-                    {language === 'hi' ? 'लॉगिन' : 'Login'}
-                  </button>
-                </Link>
+                {isAuth ? (
+                  <>
+                    <Link to="/profile" className="w-full">
+                      <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition w-full">
+                        {language === 'hi' ? 'प्रोफ़ाइल' : 'Profile'}
+                      </button>
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition w-full"
+                    >
+                      {language === 'hi' ? 'लॉग आउट' : 'Logout'}
+                    </button>
+                  </>
+                ) : (
+                  <Link to="/login" className="w-full">
+                    <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-md hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-medium w-full">
+                      {language === 'hi' ? 'लॉगिन' : 'Login'}
+                    </button>
+                  </Link>
+                )}
                 <DarkModeToggle />
                 <button
                   onClick={toggleLanguage}

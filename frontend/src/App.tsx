@@ -7,38 +7,61 @@ import FeaturesSection from './components/FeaturesSection';
 import Footer from './components/Footer';
 import Login from './pages/login';
 import Signup from './pages/signup';
+import ProtectedRoute from './components/ProtectedRoute';
+import FileComplaint from './pages/file-complaint'; // ✅ added import
 
 function App() {
+  // ✅ Language state
   const [language, setLanguage] = useState<'hi' | 'en'>('hi');
+
+  // ✅ Authentication state
+  const [isAuth, setIsAuth] = useState(
+    localStorage.getItem('isAuthenticated') === 'true'
+  );
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-      {/* Always visible */}
-      <Header language={language} setLanguage={setLanguage} />
+      {/* Header receives language + setLanguage for toggle */}
+      <Header
+        language={language}
+        setLanguage={setLanguage}
+        isAuth={isAuth}
+        setIsAuth={setIsAuth}
+      />
 
       {/* Page routing */}
       <Routes>
         <Route
           path="/"
           element={
-            <>
-              <HeroSection language={language} />
-              <StatsSection language={language} />
-              <FeaturesSection language={language} />
-            </>
+            <ProtectedRoute>
+              <>
+                <HeroSection language={language} />
+                <StatsSection language={language} />
+                <FeaturesSection language={language} />
+              </>
+            </ProtectedRoute>
           }
         />
         <Route
           path="/login"
-          element={<Login language={language} />}
+          element={<Login language={language} setIsAuth={setIsAuth} />}
         />
         <Route
           path="/signup"
-          element={<Signup language={language} />}
+          element={<Signup language={language} setIsAuth={setIsAuth} />}
+        />
+        <Route
+          path="/file-complaint"
+          element={
+            <ProtectedRoute>
+              <FileComplaint language={language} /> {/* ✅ pass language here */}
+            </ProtectedRoute>
+          }
         />
       </Routes>
 
-      {/* Always visible */}
+      {/* Footer */}
       <Footer language={language} />
     </div>
   );
