@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { Camera, BarChart3, Map, Trophy, MapPin, Clock, Users, Zap } from 'lucide-react';
 
 interface FeaturesSectionProps {

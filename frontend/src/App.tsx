@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -12,7 +12,16 @@ import FileComplaint from './pages/file-complaint'; // ✅ added import
 
 function App() {
   // ✅ Language state
-  const [language, setLanguage] = useState<'hi' | 'en'>('hi');
+
+  const [language, setLanguage] = useState<'hi' | 'en'>(
+  (localStorage.getItem('language') as 'hi' | 'en') || 'en'
+);
+
+// whenever language changes, save it
+  useEffect(() => {
+    localStorage.setItem('language', language);
+  }, [language]);
+
 
   // ✅ Authentication state
   const [isAuth, setIsAuth] = useState(
