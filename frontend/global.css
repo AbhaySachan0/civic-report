@@ -1,0 +1,227 @@
+/* globals.css */
+
+/* Section */
+.section {
+  position: relative;
+  padding: 5rem 1rem; /* py-20 */
+  transition: background-color 0.5s;
+}
+
+.section-bg-light {
+  background-color: #fff;
+}
+
+.dark .section-bg-light {
+  background-color: #111827; /* Tailwind gray-900 */
+}
+
+.section-center {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* Badge */
+.section-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(to right, #2563eb, #10b981); /* blue to green */
+}
+
+/* Titles */
+.section-title {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.dark .section-title {
+  color: #fff;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  max-width: 768px;
+  margin: 0 auto;
+  color: #374151;
+}
+
+.dark .section-subtitle {
+  color: #d1d5db;
+}
+
+/* Feature Cards */
+.feature-card {
+  position: relative;
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-left-width: 0.25rem; /* 4px */
+  transition: all 0.3s;
+}
+
+.dark .feature-card {
+  background-color: #1f2937;
+}
+
+.feature-card:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transform: translateY(-0.5rem);
+}
+
+/* Feature Icon */
+.feature-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1);
+}
+
+/* Feature title & text */
+.feature-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #111827;
+}
+
+.dark .feature-title {
+  color: #fff;
+}
+
+.feature-text {
+  color: #374151;
+}
+
+.dark .feature-text {
+  color: #d1d5db;
+}
+
+/* Overlay */
+.feature-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.feature-card:hover .feature-overlay {
+  opacity: 0.1;
+}
+
+/* Background Circles */
+.bg-circle-orange {
+  width: 16rem;
+  height: 16rem;
+  border-radius: 9999px;
+  position: absolute;
+  background: linear-gradient(to bottom right, #fb923c, #ef4444);
+  filter: blur(3rem);
+}
+
+.bg-circle-blue {
+  width: 16rem;
+  height: 16rem;
+  border-radius: 9999px;
+  position: absolute;
+  background: linear-gradient(to bottom right, #3b82f6, #10b981);
+  filter: blur(3rem);
+}
+
+/* Additional Features Box */
+.additional-box {
+  border-radius: 1.875rem;
+  padding: 2rem;
+  border: 1px solid #fcd34d; /* orange-200 */
+  background: linear-gradient(to right, #eff6ff, #ffedd5);
+  transition: all 0.5s;
+}
+
+.dark .additional-box {
+  background: linear-gradient(to right, #111827, #1f2937);
+  border-color: #374151;
+}
+
+.additional-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #111827;
+}
+
+.dark .additional-title {
+  color: #fff;
+}
+
+.additional-subtitle {
+  color: #374151;
+}
+
+.dark .additional-subtitle {
+  color: #d1d5db;
+}
+
+/* Additional Features Items */
+.additional-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: #fff;
+  border-left: 0.25rem solid #f97316; /* orange-300 */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.2s;
+}
+
+.dark .additional-feature {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+.additional-feature:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.additional-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom right, #fed7aa, #fb923c);
+}
+
+.dark .additional-icon {
+  background: linear-gradient(to bottom right, #c2410c, #b45309);
+}
+
+.additional-text {
+  font-weight: 500;
+  color: #111827;
+}
+
+.dark .additional-text {
+  color: #fff;
+}

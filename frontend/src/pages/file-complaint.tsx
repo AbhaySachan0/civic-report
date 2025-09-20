@@ -159,26 +159,6 @@ export default function FileComplaint({ language }: { language: 'hi' | 'en' }) {
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-        {/* Header */}
-        <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-orange-200 dark:border-gray-700">
-          <div className="w-full h-1 bg-orange-500"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center">
-                <FileText className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-blue-700 dark:text-blue-400">
-                  {language === 'hi' ? 'भारत सरकार' : 'Government of India'}
-                </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {language === 'hi' ? 'भारत सरकार' : 'Govt. of India'}
-                </p>
-              </div>
-            </div>
-          </div>
-        </header>
-
         {/* Success Message */}
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
