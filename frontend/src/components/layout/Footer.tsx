@@ -1,5 +1,5 @@
 import { Flag, Twitter, Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
-import { translations, SupportedLang } from "../language";
+import { translations, SupportedLang } from "../../language";
 
 interface FooterProps {
   language: SupportedLang;

@@ -1,5 +1,5 @@
 // import React from "react";
-import { translations, SupportedLang } from "../language";
+import { translations, SupportedLang } from "../../language";
 
 interface FeaturesSectionProps {
   language: SupportedLang;

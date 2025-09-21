@@ -4,7 +4,7 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
-// ✅ Check authentication from localStorage
+// Check authentication from localStorage
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 

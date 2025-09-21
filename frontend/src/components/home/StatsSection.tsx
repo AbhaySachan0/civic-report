@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { translations, SupportedLang } from "../language";
+import { translations, SupportedLang } from "../../language";
 
 interface CounterProps {
   end: number;

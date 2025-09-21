@@ -1,6 +1,6 @@
 import { Camera, Eye, ArrowRight, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
-import { translations, SupportedLang } from "../language";
+import { translations, SupportedLang } from "../../language";
 
 interface HeroSectionProps {
   language: SupportedLang;

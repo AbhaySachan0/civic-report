@@ -124,6 +124,50 @@ export const en = {
     admin: { title: "Admin Login", subtitle: "Manage complaints" },
     customer: { title: "Customer Login", subtitle: "File or track complaints" },
     footer: { help: "Need help?", contact: "Contact us", registerText: "New user?", registerLink: "Register" }
-  }
+  },
+
+  common: {
+    digitalIndia: "Digital India Initiative",
+    see: "See.",
+    report: "Report.",
+    resolve: "Resolve.",
+    submitComplaint: "Submit Complaint",
+    submitting: "Submitting...",
+    fileAnother: "File Another Complaint",
+    trackMyComplaint: "Track My Complaint",
+  },
+  complaint: {
+    title: "Complaint Title *",
+    titlePlaceholder: "Briefly describe the issue...",
+    category: "Category *",
+    selectCategory: "Select a category...",
+    description: "Description *",
+    descriptionPlaceholder: "Provide detailed information about the issue...",
+    categories: [
+      "Road & Infrastructure",
+      "Street Lighting",
+      "Garbage Collection",
+      "Water Supply",
+      "Traffic Issues",
+      "Public Safety",
+      "Parks & Recreation",
+      "Noise Pollution",
+      "Other",
+    ],
+    photoEvidence: "Photo Evidence",
+    clickPicture: "Click Picture",
+    uploadPhoto: "Upload Photo",
+    removePhoto: "Remove Photo",
+    photoLimit: "up to 10MB",
+    location: "Location *",
+    useCurrentLocation: "Use Current Location",
+    selectOnMap: "Select on Map",
+    transparencyNote:
+      "Your complaint will be tracked with complete transparency.",
+    successTitle: "Complaint Submitted Successfully!",
+    successMessage:
+      "Your civic issue has been logged and will be reviewed by the appropriate department.",
+    complaintId: "Your Complaint ID",
+  },
   
 };

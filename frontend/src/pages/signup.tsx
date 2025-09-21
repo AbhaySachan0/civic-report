@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { User, Eye, EyeOff, Mail, Lock, UserPlus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // ✅ use context
 
 interface SignupPageProps {
   language: "hi" | "en";
-  setIsAuth: (value: boolean) => void; // ✅ Added prop
 }
 
-function SignupPage({ language, setIsAuth }: SignupPageProps) {
+function SignupPage({ language }: SignupPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,6 +19,7 @@ function SignupPage({ language, setIsAuth }: SignupPageProps) {
   });
   const [error, setError] = useState("");
 
+  const { login } = useAuth(); // ✅ use login from context
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,13 +62,11 @@ function SignupPage({ language, setIsAuth }: SignupPageProps) {
     const updatedUsers = [...users, newUser];
     localStorage.setItem("users", JSON.stringify(updatedUsers));
 
-    // ✅ Save login state after signup
-    localStorage.setItem("loggedInUser", JSON.stringify(newUser));
-    localStorage.setItem("isAuthenticated", "true");
-    setIsAuth(true); // ✅ Update App auth state
+    // ✅ Instead of setting localStorage manually, just call login
+    login(newUser.email, "customer");
 
     setError("");
-    navigate("/"); // ✅ Redirect to main page
+    navigate("/"); // ✅ Redirect to home
   };
 
   return (
@@ -225,7 +224,9 @@ function SignupPage({ language, setIsAuth }: SignupPageProps) {
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
               <button
                 type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                onClick={() =>
+                  setShowConfirmPassword(!showConfirmPassword)
+                }
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
               >
                 {showConfirmPassword ? (

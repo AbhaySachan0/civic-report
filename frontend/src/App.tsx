@@ -1,40 +1,54 @@
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import HeroSection from "./components/HeroSection";
-import StatsSection from "./components/StatsSection";
-import FeaturesSection from "./components/FeaturesSection";
-import Footer from "./components/Footer";
+import { Routes, Route, useLocation } from "react-router-dom";
+import Header from "./components/layout/Header";
+import HeroSection from "./components/home/HeroSection";
+import StatsSection from "./components/home/StatsSection";
+import FeaturesSection from "./components/home/FeaturesSection";
+import Footer from "./components/layout/Footer";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 import FileComplaint from "./pages/file-complaint";
 import PreLogin from "./pages/prelogin";
+import AdminLogin from "./pages/auth/admin-login";
+import AdminDashboard from "./pages/admin/admin-dashboard/AdminDashboard";
+import { useAuth } from "./context/AuthContext"; // ✅ import context
 
 function App() {
+  const location = useLocation();
+  const { isAuth } = useAuth(); // ✅ now using context instead of local state
+
   const [language, setLanguage] = useState<"hi" | "en">(
     (localStorage.getItem("language") as "hi" | "en") || "en"
   );
 
+  const [adminEmail, setAdminEmail] = useState(
+    localStorage.getItem("adminEmail") || ""
+  );
+
+  // ✅ keep language in localStorage
   useEffect(() => {
     localStorage.setItem("language", language);
   }, [language]);
 
-  const [isAuth, setIsAuth] = useState(
-    localStorage.getItem("isAuthenticated") === "true"
-  );
+  const handleAdminLogout = () => {
+    localStorage.removeItem("adminEmail");
+    setAdminEmail("");
+  };
+
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-      <Header
-        language={language}
-        setLanguage={setLanguage}
-        isAuth={isAuth}
-        setIsAuth={setIsAuth}
-      />
+      {!isAdminRoute && (
+        <Header
+          language={language}
+          setLanguage={setLanguage}
+          // ⛔ removed isAuth & setIsAuth props, Header should use useAuth()
+        />
+      )}
 
       <Routes>
-        {/* Root path */}
         <Route
           path="/"
           element={
@@ -52,23 +66,29 @@ function App() {
           }
         />
 
-        {/* PreLogin route (for header button redirects) */}
         <Route
           path="/prelogin"
           element={<PreLogin language={language} setLanguage={setLanguage} />}
         />
 
-        {/* Login / Signup */}
+        <Route path="/login" element={<Login language={language} />} />
+        <Route path="/signup" element={<Signup language={language} />} />
+
         <Route
-          path="/login"
-          element={<Login language={language} setIsAuth={setIsAuth} />}
-        />
-        <Route
-          path="/signup"
-          element={<Signup language={language} setIsAuth={setIsAuth} />}
+          path="/admin-login"
+          element={<AdminLogin setAdminEmail={setAdminEmail} />}
         />
 
-        {/* Protected pages */}
+        <Route
+          path="/admin-dashboard"
+          element={
+            <AdminDashboard
+              adminEmail={adminEmail}
+              onLogout={handleAdminLogout}
+            />
+          }
+        />
+
         <Route
           path="/file-complaint"
           element={
@@ -79,7 +99,7 @@ function App() {
         />
       </Routes>
 
-      <Footer language={language} />
+      {!isAdminRoute && <Footer language={language} />}
     </div>
   );
 }

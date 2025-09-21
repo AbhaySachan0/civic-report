@@ -1,13 +1,14 @@
 import { useState, FormEvent } from "react";
 import { Eye, EyeOff, User, Lock } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // ✅ import context
 
 interface LoginProps {
   language: "hi" | "en";
-  setIsAuth: (value: boolean) => void; // ✅ Added prop to update auth state
 }
 
-function Login({ language, setIsAuth }: LoginProps) {
+function Login({ language }: LoginProps) {
+  const { login } = useAuth(); // ✅ use context login
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,12 +28,8 @@ function Login({ language, setIsAuth }: LoginProps) {
     if (user) {
       alert(language === "hi" ? "सफलतापूर्वक लॉगिन हुआ!" : "Login successful!");
 
-      // ✅ Save login state
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
-      localStorage.setItem("isAuthenticated", "true");
-
-      // ✅ Update App auth state
-      setIsAuth(true);
+      // ✅ Save user in context (also updates localStorage internally)
+      login(user.email, "customer");
 
       navigate("/");
     } else {
